@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            *{
+                margin: 0px;
+                padding: 0px;
+                position: absolute;
+                background-repeat: no-repeat;
+                background-position: 50% 50%;
+            }
+            #inventory{
+                width: 700px;
+                left: 50px;
+                top: 100px;
+                height: 600px;
+                background-color: #aaa;
+                border: black solid 3px;
+                border-radius: 15px;
+            }
+            #hotbar{
+                background-color: #aaa;
+                width: 700px;
+                height: 80px;
+                left: 50px;
+                top: 720px;
+                border: black solid 3px;
+                border-radius: 15px;
+            }
+            .hotbar-item{
+                width: 70px;
+                height: 70px;
+                top: 5px;
+                border: black solid 1px;
+                border-radius: 5px;
+                background-color: #ccc;
+                background-size: 60px;
+            }
+            .inventory-item{
+                width: 70px;
+                height: 70px;
+                border: black solid 1px;
+                border-radius: 5px;
+                background-color: #ccc;
+                background-size: 60px;
+            }
+            .crafting-slot{
+                width: 70px;
+                height: 70px;
+                border: black solid 1px;
+                border-radius: 5px;
+                background-color: #ccc;
+                background-size: 60px;
+            }
+            #crafting-result{
+                width: 70px;
+                height: 70px;
+                border: black solid 1px;
+                border-radius: 5px;
+                background-color: #ccc;
+                background-size: 60px;
+            }
+            #crafting-result-table{
+                width: 70px;
+                height: 70px;
+                border: black solid 1px;
+                border-radius: 5px;
+                background-color: #ccc;
+                background-size: 60px;
+            }
+            .selected{
+                background-color: lightgreen !important;
+            }
+            .blockCount{
+                width: 20px;
+                height: 20px;
+                top: 50px;
+                left: 50px;
+                font-size: 18px;
+                font-family: Arial, Helvetica, sans-serif bold;
+                text-align: right;
+            }
+            #craftingTable{
+                width: 220px;
+                left: 225px;
+                top: 175px;
+                height: 220px;
+                background-color: #aaa;
+            }
+            #furnace{
+                width: 220px;
+                left: 225px;
+                top: 175px;
+                height: 220px;
+                background-color: #aaa;
+            }
+            #furnace-progress{
+                height: 70px;
+                width: 70px;
+                top: 75px;
+                left: 75px;
+                background-color: #888;
+                border: black solid 1px;
+            }
+            #current-furnace-progress{
+                height: 0px;
+                width: 70px;
+                top: 70px;
+                background-color: #666;
+            }
+        </style>
+    </head>
+    <body>
+        <canvas id='game' width='800' height='800' style='border: black solid 1px;'></canvas>
+        <div id='hotbar'>
+            <div onclick='selectSlot(0)' id='inv0' class='hotbar-item' style='left: 7px'>1</div>
+            <div onclick='selectSlot(1)' id='inv1' class='hotbar-item' style='left: 84px'>2</div>
+            <div onclick='selectSlot(2)' id='inv2' class='hotbar-item' style='left: 161px'>3</div>
+            <div onclick='selectSlot(3)' id='inv3' class='hotbar-item' style='left: 238px'>4</div>
+            <div onclick='selectSlot(4)' id='inv4' class='hotbar-item' style='left: 315px'>5</div>
+            <div onclick='selectSlot(5)' id='inv5' class='hotbar-item' style='left: 392px'>6</div>
+            <div onclick='selectSlot(6)' id='inv6' class='hotbar-item' style='left: 469px'>7</div>
+            <div onclick='selectSlot(7)' id='inv7' class='hotbar-item' style='left: 546px'>8</div>
+            <div onclick='selectSlot(8)' id='inv8' class='hotbar-item' style='left: 623px'>9</div>
+        </div>
+        <div id='inventory' hidden='true'>
+            <div onclick='selectSlot(9)' id='inv9' class='inventory-item' style='left: 7px; top: 375px;'></div>
+            <div onclick='selectSlot(10)' id='inv10' class='inventory-item' style='left: 84px; top: 375px;'></div>
+            <div onclick='selectSlot(11)' id='inv11' class='inventory-item' style='left: 161px; top: 375px;'></div>
+            <div onclick='selectSlot(12)' id='inv12' class='inventory-item' style='left: 238px; top: 375px;'></div>
+            <div onclick='selectSlot(13)' id='inv13' class='inventory-item' style='left: 315px; top: 375px;'></div>
+            <div onclick='selectSlot(14)' id='inv14' class='inventory-item' style='left: 392px; top: 375px;'></div>
+            <div onclick='selectSlot(15)' id='inv15' class='inventory-item' style='left: 469px; top: 375px;'></div>
+            <div onclick='selectSlot(16)' id='inv16' class='inventory-item' style='left: 546px; top: 375px;'></div>
+            <div onclick='selectSlot(17)' id='inv17' class='inventory-item' style='left: 623px; top: 375px;'></div>
+
+            <div onclick='selectSlot(18)' id='inv18' class='inventory-item' style='left: 7px; top: 450px;'></div>
+            <div onclick='selectSlot(19)' id='inv19' class='inventory-item' style='left: 84px; top: 450px;'></div>
+            <div onclick='selectSlot(20)' id='inv20' class='inventory-item' style='left: 161px; top: 450px;'></div>
+            <div onclick='selectSlot(21)' id='inv21' class='inventory-item' style='left: 238px; top: 450px;'></div>
+            <div onclick='selectSlot(22)' id='inv22' class='inventory-item' style='left: 315px; top: 450px;'></div>
+            <div onclick='selectSlot(23)' id='inv23' class='inventory-item' style='left: 392px; top: 450px;'></div>
+            <div onclick='selectSlot(24)' id='inv24' class='inventory-item' style='left: 469px; top: 450px;'></div>
+            <div onclick='selectSlot(25)' id='inv25' class='inventory-item' style='left: 546px; top: 450px;'></div>
+            <div onclick='selectSlot(26)' id='inv26' class='inventory-item' style='left: 623px; top: 450px;'></div>
+
+            <div onclick='selectSlot(27)' id='inv27' class='inventory-item' style='left: 7px; top: 525px;'></div>
+            <div onclick='selectSlot(28)' id='inv28' class='inventory-item' style='left: 84px; top: 525px;'></div>
+            <div onclick='selectSlot(29)' id='inv29' class='inventory-item' style='left: 161px; top: 525px;'></div>
+            <div onclick='selectSlot(30)' id='inv30' class='inventory-item' style='left: 238px; top: 525px;'></div>
+            <div onclick='selectSlot(31)' id='inv31' class='inventory-item' style='left: 315px; top: 525px;'></div>
+            <div onclick='selectSlot(32)' id='inv32' class='inventory-item' style='left: 392px; top: 525px;'></div>
+            <div onclick='selectSlot(33)' id='inv33' class='inventory-item' style='left: 469px; top: 525px;'></div>
+            <div onclick='selectSlot(34)' id='inv34' class='inventory-item' style='left: 546px; top: 525px;'></div>
+            <div onclick='selectSlot(35)' id='inv35' class='inventory-item' style='left: 623px; top: 525px;'></div>
+        </div>
+        <div id='inv-crafting' style='top: 100px' hidden='true'>
+            <div onclick='setCraftingSlot(0, "inv")' id='invcraft0' class='crafting-slot' style='left: 225px; top: 100px;'></div>
+            <div onclick='setCraftingSlot(1, "inv")' id='invcraft1' class='crafting-slot' style='left: 300px; top: 100px;'></div>
+            <div onclick='setCraftingSlot(2, "inv")' id='invcraft2' class='crafting-slot' style='left: 225px; top: 175px;'></div>
+            <div onclick='setCraftingSlot(3, "inv")' id='invcraft3' class='crafting-slot' style='left: 300px; top: 175px;'></div>
+            <div onclick='craft("inv")' id='crafting-result' style='top: 135px; left: 440px;'></div>
+        </div>
+        <div id='craftingTable' hidden='true'>
+            <div onclick='setCraftingSlot(0, "table")' id='tablecraft0' class='crafting-slot' style='left: 0px; top: 0px;'></div>
+            <div onclick='setCraftingSlot(1, "table")' id='tablecraft1' class='crafting-slot' style='left: 75px; top: 0px;'></div>
+            <div onclick='setCraftingSlot(2, "table")' id='tablecraft2' class='crafting-slot' style='left: 150px; top: 0px;'></div>
+            <div onclick='setCraftingSlot(3, "table")' id='tablecraft3' class='crafting-slot' style='left: 0px; top: 75px;'></div>
+            <div onclick='setCraftingSlot(4, "table")' id='tablecraft4' class='crafting-slot' style='left: 75px; top: 75px;'></div>
+            <div onclick='setCraftingSlot(5, "table")' id='tablecraft5' class='crafting-slot' style='left: 150px; top: 75px;'></div>
+            <div onclick='setCraftingSlot(6, "table")' id='tablecraft6' class='crafting-slot' style='left: 0px; top: 150px;'></div>
+            <div onclick='setCraftingSlot(7, "table")' id='tablecraft7' class='crafting-slot' style='left: 75px; top: 150px;'></div>
+            <div onclick='setCraftingSlot(8, "table")' id='tablecraft8' class='crafting-slot' style='left: 150px; top: 150px;'></div>
+
+            <div onclick='craft("table")' id='crafting-result-table' style='left: 300px; top: 75px'></div>
+        </div>
+        <div id='furnace'>
+            <div onclick='setFurnaceSlot(0)' id='furnace-item' class='crafting-slot' style='left: 75px;'></div>
+            <div onclick='setFurnaceSlot(1)' id='furnace-fuel' class='crafting-slot' style='left: 75px; top: 150px;'></div>
+            <div id='furnace-progress'><div id='current-furnace-progress'></div></div>
+
+            <div onclick='getFurnaceResult()' id='furnace-result' class='crafting-slot' style='left: 225px; top: 75px'></div>
+        </div>
+    </body>
+    <script src='JS/block.js'></script>
+    <script src='JS/terraingen.js'></script>
+    <script src='JS/tilemap.js'></script>
+    <script src='JS/character.js'></script>
+    <script src='JS/mine.js'></script>
+    <script src='JS/inventory.js'></script>
+    <script src='JS/craftingtable.js'></script>
+    <script src='JS/qol.js'></script>
+    <script src='JS/fps.js'></script>
+    <script src='JS/furnace.js'></script>
+    <script src='JS/cheat.js'></script>
+</html>
