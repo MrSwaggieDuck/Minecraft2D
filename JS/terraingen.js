@@ -41,7 +41,10 @@ function GenerateTerrain(w, h) {
             } else if (y >= dirtlayer.start && y <= dirtlayer.end) {
                 terrain[y][x] = 3;
             } else if (y >= stonedirtlayer.start && y <= stonedirtlayer.end) {
-                if(Math.random() > 0.5) { terrain[y][x] = 3 } else { terrain[y][x] = 1};
+                chance = Math.random();
+                if(chance < 1/3) { terrain[y][x] = 3 } 
+                else if (chance < 2/3) { terrain[y][x] = 13 }
+                else { terrain[y][x] = 1};
             } else if (y >= stonelayer1.start && y <= stonelayer1.end) {
                 chance = Math.random();
                 if (chance < 0.1) {
@@ -119,6 +122,6 @@ function GenerateTerrain(w, h) {
     return terrain;
 }
 
-gamemap = GenerateTerrain(128,128);
+gamemap = GenerateTerrain(1024,128);
 
 loaded[1] = true;

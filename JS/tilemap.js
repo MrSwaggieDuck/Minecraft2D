@@ -44,6 +44,14 @@ var tiles = {
     gold_ore: new Image(),
     crafting_table: new Image(),
     furnace: new Image(),
+    coal_block: new Image(),
+    iron_block: new Image(),
+    gold_block: new Image(),
+    lapis_block: new Image(),
+    redstone_block: new Image(),
+    diamond_block: new Image(),
+    emerald_block: new Image(),
+    gravel: new Image(),
 }
 tiles.stone.src = 'Images/Tiles/Stone.png';
 tiles.grass.src = 'Images/Tiles/Grass.png';
@@ -62,6 +70,14 @@ tiles.lapis_ore.src = 'Images/Tiles/Lapis_Ore.png';
 tiles.gold_ore.src = 'Images/Tiles/Gold_Ore.png';
 tiles.crafting_table.src = 'Images/Tiles/Crafting_Table.png';
 tiles.furnace.src = 'Images/Tiles/Furnace.png';
+tiles.coal_block.src = 'Images/Tiles/Coal_Block.png';
+tiles.iron_block.src = 'Images/Tiles/Iron_Block.png';
+tiles.gold_block.src = 'Images/Tiles/Gold_Block.png';
+tiles.lapis_block.src = 'Images/Tiles/Lapis_Block.png';
+tiles.redstone_block.src = 'Images/Tiles/Redstone_Block.png';
+tiles.diamond_block.src = 'Images/Tiles/Diamond_Block.png';
+tiles.emerald_block.src = 'Images/Tiles/Emerald_Block.png';
+tiles.gravel.src = 'Images/Tiles/Gravel.png';
 
 var tileW = 800/16, tileH = 800/16, mapW = gamemap[0].length, mapH = gamemap.length;
 
@@ -112,17 +128,25 @@ function drawGame() {
                     case 4: image = tiles.cobblestone; break;
                     case 5: image = tiles.oak_planks; break;
                     case 7: image = tiles.bedrock; break;
+                    case 13: image = tiles.gravel; break;
                     case 14: image = tiles.gold_ore; break;
                     case 15: image = tiles.iron_ore; break;
                     case 16: image = tiles.coal_ore; break;
                     case 17: image = tiles.oak_wood; break;
                     case 18: image = tiles.oak_leaves; break;
                     case 21: image = tiles.lapis_ore; break;
+                    case 22: image = tiles.lapis_block; break;
+                    case 41: image = tiles.gold_block; break;
+                    case 42: image = tiles.iron_block; break;
                     case 56: image = tiles.diamond_ore; break;
+                    case 57: image = tiles.diamond_block; break;
                     case 58: image = tiles.crafting_table; break;
                     case 61: image = tiles.furnace; break;
                     case 73: image = tiles.redstone_ore; break;
                     case 129: image = tiles.emerald_ore; break;
+                    case 133: image = tiles.emerald_block; break;
+                    case 152: image = tiles.redstone_block; break;
+                    case 173: image = tiles.coal_block; break;
                 }
                 ctx.drawImage(image, viewport.offset.x + x*tileW, viewport.offset.y + y*tileH, tileW, tileH)
             } else {
