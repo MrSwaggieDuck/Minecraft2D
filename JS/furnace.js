@@ -68,8 +68,9 @@ function Furnace(posx, posy) {
     }
     this.tick = function() {
         if (this.fuel.type == null || this.item.type == null) { this.progress = 0; return };
-        if ((this.fuel.type.id == 263 || this.fuel.type.id == 17) && this.item.type.meltable[0] == true) {
+        if ((this.fuel.type.id == 263 || Math.floor(this.fuel.type.id) == 17) && this.item.type.meltable[0] == true) {
             this.progress += 1;
+            this.fuel.hp -= 1;
         } else {
             this.progress = 0;
         }
@@ -82,9 +83,9 @@ function Furnace(posx, posy) {
         if (this.fuel.hp <= 0) {
             this.fuel.amount -= 1;
             if (currentFurnace.fuel.type == Coal) { this.fuel.hp = 8*600 }
-            else if (currentFurnace.fuel.type == Oak_Wood) { this.fuel.hp = 1.5*600 }
+            else if (Math.floor(currentFurnace.fuel.type.id) == 17) { this.fuel.hp = 1.5*600 }
         }
-        this.fuel.hp -= 1;
+        
     }
 }
 
@@ -127,7 +128,7 @@ function setFurnaceSlot(num) {
             currentFurnace.fuel.amount = inventory[selectedSlot].amount;
             inventory[selectedSlot].amount = 0;
             if (currentFurnace.fuel.type == Coal) { currentFurnace.fuel.hp = 8*600 }
-            else if (currentFurnace.fuel.type == Oak_Wood) { currentFurnace.fuel.hp = 1.5*600 }
+            else if (Math.floor(currentFurnace.fuel.type.id) == 17) { currentFurnace.fuel.hp = 1.5*600 }
         }
     }
 }

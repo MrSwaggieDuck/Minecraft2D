@@ -26,20 +26,33 @@ function Character(posx, posy, sizew, sizeh) {
 
         this.BR = {x: this.pos.x + this.size.w/2 - 1, y: this.pos.y + this.size.h/2 - 1};
         this.BL = {x: this.pos.x - this.size.w/2, y: this.pos.y + this.size.h/2 - 1};
+        this.MR = {x: this.pos.x + this.size.w/2 - 1, y: this.pos.y};
+        this.ML = {x: this.pos.x - this.size.w/2, y: this.pos.y};
         this.TR = {x: this.pos.x + this.size.w/2 - 1, y: this.pos.y - this.size.h/2};
         this.TL = {x: this.pos.x - this.size.w/2, y: this.pos.y - this.size.h/2};
 
-        if(gamemap[Math.floor((this.BR.y+1)/tileH)][Math.floor(this.BR.x/tileW)] == 0 && gamemap[Math.floor((this.BL.y+1)/tileH)][Math.floor(this.BL.x/tileW)] == 0){
+        if (gamemap[Math.floor(this.BR.y/tileH)][Math.floor(this.BR.x/tileW)] == 65 || gamemap[Math.floor(this.BL.y/tileH)][Math.floor(this.BL.x/tileW)] == 65 || gamemap[Math.floor(this.TR.y/tileH)][Math.floor(this.TR.x/tileW)] == 65 || gamemap[Math.floor(this.TL.y/tileH)][Math.floor(this.TL.x/tileW)] == 65 || gamemap[Math.floor(this.MR.y/tileH)][Math.floor(this.MR.x/tileW)] == 65 || gamemap[Math.floor(this.ML.y/tileH)][Math.floor(this.ML.x/tileW)] == 65) {
+            gravity = 0;
+            onLadder = true;
+        } else {
+            gravity = 1;
+            onLadder = false;
+        }
+
+        if(!this.colliding(this.BR.x, this.BR.y+1) && !this.colliding(this.BL.x, this.BL.y+1)){
             this.force.y = this.force.y + gravity;
         } else { this.force.y = 0};
 
         if(keys[38] || keys[87]) {
-            if (gamemap[Math.floor((this.BR.y+1)/tileH)][Math.floor(this.BR.x/tileW)] != 0 || gamemap[Math.floor((this.BL.y+1)/tileH)][Math.floor(this.BL.x/tileW)] != 0) {
+            if (this.colliding(this.BR.x, this.BR.y+1) || this.colliding(this.BL.x, this.BL.y+1)) {
                 this.force.y = -12;
             }
         } 
-
-        //console.log('jump:'+gamemap[Math.floor((this.BR.y+1)/tileH)][Math.floor(this.BR.x/tileW)]+''+gamemap[Math.floor((this.BL.y+1)/tileH)][Math.floor(this.BL.x/tileW)])
+        if (onLadder && (keys[38] || keys[87])) {
+            this.force.y = -5;
+        } else if (onLadder && (keys[83] || keys[40])) {
+            this.force.y = 5;
+        }
 
         if(keys[37] || keys[65]) {
             this.force.x = -this.speed;
@@ -52,57 +65,72 @@ function Character(posx, posy, sizew, sizeh) {
             }
         }
         
-        //VERTICAL COLLISION DETECTION
+        //VERTICAL
         if (this.force.y > 0) {
-            if(gamemap[Math.floor((this.BR.y+this.force.y)/tileH)][Math.floor(this.BR.x/tileW)] == 0 && gamemap[Math.floor((this.BL.y+this.force.y)/tileH)][Math.floor(this.BL.x/tileW)] == 0) {
+            if(!this.colliding(this.BR.x, this.BR.y+this.force.y) && !this.colliding(this.BL.x, this.BL.y+this.force.y)){
                 this.pos.y += this.force.y;
             } else {
-                i = 0;
-                while(gamemap[Math.floor((this.BR.y+i)/tileH)][Math.floor(this.BR.x/tileW)] == 0 && gamemap[Math.floor((this.BL.y+i)/tileH)][Math.floor(this.BL.x/tileW)] == 0) {
-                    i += 1;
+                while(!this.colliding(this.BR.x, this.BR.y+1) && !this.colliding(this.BL.x, this.BL.y+1)) {
+                    this.pos.y += 1;
+                    this.BR.y += 1;
+                    this.BL.y += 1;
                 }
-                this.pos.y += i-1;
             }
         } else if (this.force.y < 0) {
-            if(gamemap[Math.floor((this.TR.y+this.force.y)/tileH)][Math.floor(this.TR.x/tileW)] == 0 && gamemap[Math.floor((this.TL.y+this.force.y)/tileH)][Math.floor(this.TL.x/tileW)] == 0) {
+            if(!this.colliding(this.TR.x, this.TR.y+this.force.y) && !this.colliding(this.TL.x, this.TL.y+this.force.y)) {
                 this.pos.y += this.force.y;
             } else {
-                i = 0;
-                while(gamemap[Math.floor((this.TR.y-i)/tileH)][Math.floor(this.TR.x/tileW)] == 0 && gamemap[Math.floor((this.TL.y-i)/tileH)][Math.floor(this.TL.x/tileW)] == 0) {
-                    i += 1;
+                while(!this.colliding(this.TR.x, this.TR.y-1) && !this.colliding(this.TL.x, this.TL.y-1)) {
+                    this.pos.y -= 1;
+                    this.TR.y -= 1;
+                    this.TL.y -=1;
                 }
-                this.pos.y -= i-1;
                 this.force.y = 0;
             }
         }
 
-        //HORIZONTAL COLLISION DETECTION
+        //HORIZONTAL
         if (this.force.x > 0) {
-            if(gamemap[Math.floor(this.BR.y/tileH)][Math.floor((this.BR.x+this.force.x)/tileW)] == 0 && gamemap[Math.floor(this.TR.y/tileH)][Math.floor((this.TR.x+this.force.x)/tileW)] == 0) {
+            if(!this.colliding(this.BR.x + this.force.x, this.BR.y) && !this.colliding(this.TR.x+this.force.x, this.TR.y) && !this.colliding(this.MR.x+this.force.x, this.MR.y)) {
                 this.pos.x += this.force.x;
-            } else if (gamemap[Math.floor(this.BR.y/tileH)][Math.floor((this.BR.x+1)/tileW)] == 0 && gamemap[Math.floor(this.TR.y/tileH)][Math.floor((this.TR.x+1)/tileW)] == 0) {
-                i = 0;
-                while(gamemap[Math.floor(this.BR.y/tileH)][Math.floor((this.BR.x+i)/tileW)] == 0 && gamemap[Math.floor(this.TR.y/tileH)][Math.floor((this.TR.x+i)/tileW)]) {
-                    i += 1;
+            } else if (!this.colliding(this.BR.x+1, this.BR.y) && !this.colliding(this.TR.x+1, this.TR.y) && !this.colliding(this.MR.x+1, this.MR.y)) {
+                while(!this.colliding(this.BR.x+1, this.BR.y) && !this.colliding(this.TR.x+1, this.TR.y) && !this.colliding(this.MR.x+1, this.MR.y)) {
+                    this.pos.x += 1;
+                    this.BR.x += 1;
+                    this.MR.x += 1;
+                    this.TR.x += 1;
                 }
-                this.pos.x += i;
             }
         } else if (this.force.x < 0) {
-            if(gamemap[Math.floor(this.BL.y/tileH)][Math.floor((this.BL.x+this.force.x)/tileW)] == 0 && gamemap[Math.floor(this.TL.y/tileH)][Math.floor((this.TL.x+this.force.x)/tileW)] == 0) {
+            if(!this.colliding(this.BL.x + this.force.x, this.BL.y) && !this.colliding(this.TL.x+this.force.x, this.TL.y) && !this.colliding(this.ML.x+this.force.x, this.ML.y)) {
                 this.pos.x += this.force.x;
-            } else if (gamemap[Math.floor(this.BL.y/tileH)][Math.floor((this.BL.x-1)/tileW)] == 0 && gamemap[Math.floor(this.TL.y/tileH)][Math.floor((this.TL.x-1)/tileW)] == 0) {
-                i = 0;
-                while(gamemap[Math.floor(this.BL.y/tileH)][Math.floor((this.BL.x-i)/tileW)] == 0 && gamemap[Math.floor(this.TL.y/tileH)][Math.floor((this.TL.x-i)/tileW)]) {
-                    i += 1;
+            } else if (!this.colliding(this.BL.x-1, this.BL.y) && !this.colliding(this.TL.x-1, this.TL.y) && !this.colliding(this.ML.x-1, this.ML.y)) {
+                while(!this.colliding(this.BL.x-1, this.BL.y) && !this.colliding(this.TL.x-1, this.TL.y) && !this.colliding(this.ML.x-1, this.ML.y)) {
+                    this.pos.x -= 1;
+                    this.BL.x -= 1;
+                    this.ML.x -= 1;
+                    this.TL.x -= 1;
                 }
-                this.pos.x -= i;
             }
         }
 
-        //console.log(gamemap[Math.floor(this.BR.y/tileH)][Math.floor(this.BR.x/tileW)]  + ':' + gamemap[Math.floor(this.BL.y/tileH)][Math.floor(this.BL.x/tileW)])
-        //console.log(this.force.y);
-        //console.log(keys);
+        if (onLadder) {
+            this.force.y = 0;
+        } 
 
+    }
+
+    this.colliding = function(posx, posy) {
+        var tileX = Math.floor(posx/tileW);
+        var tileY = Math.floor(posy/tileH);
+
+        if (collisionmap[tileY][tileX] == 1) {
+            return true;
+        } else if (collisionmap[tileY][tileX] == 0) {
+            return false;
+        } else if (collisionmap[tileY][tileX] == undefined) {
+            return true;
+        }
     }
 
     this.draw = function() {
@@ -110,11 +138,13 @@ function Character(posx, posy, sizew, sizeh) {
         ctx.fillRect(this.pos.x - this.size.w/2 + viewport.offset.x, this.pos.y - this.size.h/2 + viewport.offset.y, this.size.w, this.size.h);
 
         ctx.fillStyle=  '#ff00ff';
+        ctx.fillRect(this.pos.x + viewport.offset.x, this.pos.y + viewport.offset.y, 1, 1);
         ctx.fillRect(this.TL.x + viewport.offset.x, this.TL.y + viewport.offset.y, 1, 1);
         ctx.fillRect(this.TR.x + viewport.offset.x, this.TR.y + viewport.offset.y, 1, 1);
         ctx.fillRect(this.BL.x + viewport.offset.x, this.BL.y + viewport.offset.y, 1, 1);
         ctx.fillRect(this.BR.x + viewport.offset.x, this.BR.y + viewport.offset.y, 1, 1);
-        ctx.fillRect(this.pos.x + viewport.offset.x, this.pos.y + viewport.offset.y, 1, 1);
+        ctx.fillRect(this.ML.x + viewport.offset.x, this.ML.y + viewport.offset.y, 1, 1);
+        ctx.fillRect(this.MR.x + viewport.offset.x, this.MR.y + viewport.offset.y, 1, 1);
     }
 }
 

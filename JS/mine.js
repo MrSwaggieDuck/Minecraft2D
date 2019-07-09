@@ -8,7 +8,8 @@ var blockDamage;
 
 function Mine() {
     var minedBlock = gamemap[Math.floor(tileY)][Math.floor(tileX)];
-    gamemap[Math.floor(tileY)][Math.floor(tileX)] = 0;
+    gamemap[tileY][tileX] = 0;
+    collisionmap[tileY][tileX] = 0;
 
     tool = inventory[selectedSlot];
 
@@ -119,12 +120,18 @@ function startMining(e) {
         if (inventory[selectedSlot] == null || inventory[selectedSlot].type == 'tool') { return }
 
         if (inventory[selectedSlot].type == 'block') {
+            if (inventory[selectedSlot].id == 65) {
+                gamemap[tileY][tileX] = 65;
+                collisionmap[tileY][tileX] = 0;
+                return;
+            }
             if (inventory[selectedSlot].id == 61) {
                 console.log('NEW FURNACE')
                 furnaces.push(new Furnace(tileX, tileY));
             }
 
             gamemap[tileY][tileX] = inventory[selectedSlot].id;
+            collisionmap[tileY][tileX] = 1;
             inventory[selectedSlot].amount -= 1; 
 
             
@@ -176,15 +183,16 @@ function Mining() {
         else if (block == Redstone_Block) { blockDamage += 25/3.75 }
         else if (block == Diamond_Block) { blockDamage += 25/12.5 }
         else if (block == Emerald_Block) { blockDamage += 25/12.5}
+        else if (block == Sandstone) { blockDamage += 4/0.65 }
         else { blockDamage += 1 };
     } else if (inventory[selectedSlot] == Wooden_Axe) {
-        if (block == Oak_Wood) { blockDamage += 3/1.5 }
-        else if (block == Oak_Planks) { blockDamage += 3/1.5}
+        if (block == Oak_Wood || block == Spruce_Wood) { blockDamage += 3/1.5 }
+        else if (block == Oak_Planks || block == Spruce_Planks) { blockDamage += 3/1.5}
         else if (block == Crafting_Table) { blockDamage += 3.75/1.9 }
         else { blockDamage += 1 }
     } else if (inventory[selectedSlot] == Wooden_Shovel) {
         if (block == Grass) { blockDamage += 0.9/0.45 }
-        else if (block == Dirt) { blockDamage += 0.75/0.4 } 
+        else if (block == Dirt || block == Sand) { blockDamage += 0.75/0.4 } 
         else if (block == Gravel) { blockDamage += 0.9/0.45 }
         else { blockDamage += 1 }
     } else if (inventory[selectedSlot] == Stone_Pickaxe) {
@@ -205,15 +213,16 @@ function Mining() {
         else if (block == Redstone_Block) { blockDamage += 25/1.9 }
         else if (block == Diamond_Block) { blockDamage += 25/6.25 }
         else if (block == Emerald_Block) { blockDamage += 25/6.25}
+        else if (block == Sandstone) { blockDamage += 4/0.35 }
         else { blockDamage += 1 };
     } else if (inventory[selectedSlot] == Stone_Axe) {
-        if (block == Oak_Wood) { blockDamage += 3/0.75 }
-        else if (block == Oak_Planks) { blockDamage += 3/0.75 }
+        if (block == Oak_Wood || block == Spruce_Wood) { blockDamage += 3/0.75 }
+        else if (block == Oak_Planks || block == Spruce_Planks) { blockDamage += 3/0.75 }
         else if (block == Crafting_Table) { blockDamage += 3.75/0.95 }
         else { blockDamage += 1 }
     } else if (inventory[selectedSlot] == Stone_Shovel) {
         if (block == Grass) { blockDamage += 0.9/0.25 }
-        else if (block == Dirt) { blockDamage += 0.75/0.2 } 
+        else if (block == Dirt || block == Sand) { blockDamage += 0.75/0.2 } 
         else if (block == Gravel) { blockDamage += 0.9/0.25 }
         else { blockDamage += 1 }
     } else if (inventory[selectedSlot] == Iron_Pickaxe) {
@@ -234,15 +243,16 @@ function Mining() {
         else if (block == Redstone_Block) { blockDamage += 25/1.25 }
         else if (block == Diamond_Block) { blockDamage += 25/1.25 }
         else if (block == Emerald_Block) { blockDamage += 25/1.25}
+        else if (block == Sandstone) { blockDamage += 4/0.2 }
         else { blockDamage += 1 };
     } else if (inventory[selectedSlot] == Iron_Axe) {
-        if (block == Oak_Wood) { blockDamage += 3/0.5 }
-        else if (block == Oak_Planks) { blockDamage += 3/0.5 }
+        if (block == Oak_Wood || block == Spruce_Wood) { blockDamage += 3/0.5 }
+        else if (block == Oak_Planks || block == Spruce_Planks) { blockDamage += 3/0.5 }
         else if (block == Crafting_Table) { blockDamage += 3.75/0.65 }
         else { blockDamage += 1 }
     } else if (inventory[selectedSlot] == Iron_Shovel) {
         if (block == Grass) { blockDamage += 0.9/0.15 }
-        else if (block == Dirt) { blockDamage += 0.75/0.15 } 
+        else if (block == Dirt || block == Sand) { blockDamage += 0.75/0.15 } 
         else if (block == Gravel) { blockDamage += 0.9/0.15 }
         else { blockDamage += 1 }
     } else if (inventory[selectedSlot] == Diamond_Pickaxe) {
@@ -263,15 +273,16 @@ function Mining() {
         else if (block == Redstone_Block) { blockDamage += 25/0.95 }
         else if (block == Diamond_Block) { blockDamage += 25/0.95 }
         else if (block == Emerald_Block) { blockDamage += 25/0.95}
+        else if (block == Sandstone) { blockDamage += 4/0.2 }
         else { blockDamage += 1 };
     } else if (inventory[selectedSlot] == Diamond_Axe) {
-        if (block == Oak_Wood) { blockDamage += 3/0.4 }
-        else if (block == Oak_Planks) { blockDamage += 3/0.4 }
+        if (block == Oak_Wood || block == Spruce_Wood) { blockDamage += 3/0.4 }
+        else if (block == Oak_Planks || block == Spruce_Planks) { blockDamage += 3/0.4 }
         else if (block == Crafting_Table) { blockDamage += 3.75/0.5 }
         else { blockDamage += 1 }
     } else if (inventory[selectedSlot] == Diamond_Shovel) {
         if (block == Grass) { blockDamage += 0.9/0.15 }
-        else if (block == Dirt) { blockDamage += 0.75/0.1 } 
+        else if (block == Dirt || block == Sand) { blockDamage += 0.75/0.1 } 
         else if (block == Gravel) { blockDamage += 0.9/0.15 }
         else { blockDamage += 1 }
     } else if (inventory[selectedSlot] == Golden_Pickaxe) {
@@ -292,22 +303,19 @@ function Mining() {
         else if (block == Redstone_Block) { blockDamage += 25/0.65 }
         else if (block == Diamond_Block) { blockDamage += 25/2.1 }
         else if (block == Emerald_Block) { blockDamage += 25/2.1 }
+        else if (block == Sandstone) { blockDamage += 4/0.1 }
         else { blockDamage += 1 };
     } else if (inventory[selectedSlot] == Golden_Axe) {
-        if (block == Oak_Wood) { blockDamage += 3/0.25 }
-        else if (block == Oak_Planks) { blockDamage += 3/0.25 }
+        if (block == Oak_Wood || block == Spruce_Wood) { blockDamage += 3/0.25 }
+        else if (block == Oak_Planks || block == Spruce_Planks) { blockDamage += 3/0.25 }
         else if (block == Crafting_Table) { blockDamage += 3.75/0.35 }
         else { blockDamage += 1 }
     } else if (inventory[selectedSlot] == Golden_Shovel) {
         if (block == Grass) { blockDamage += 0.9/0.1 }
-        else if (block == Dirt) { blockDamage += 0.75/0.1 } 
+        else if (block == Dirt || block == Sand) { blockDamage += 0.75/0.1 } 
         else if (block == Gravel) { blockDamage += 0.9/0.1 }
         else { blockDamage += 1 }
-    }
-    
-    
-    
-    {
+    } else {
         blockDamage += 1;
     }
     

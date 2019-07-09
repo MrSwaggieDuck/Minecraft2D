@@ -52,6 +52,12 @@ var tiles = {
     diamond_block: new Image(),
     emerald_block: new Image(),
     gravel: new Image(),
+    spruce_leaves: new Image(),
+    spruce_wood: new Image(),
+    spruce_planks: new Image(),
+    ladder: new Image(),
+    sand: new Image(),
+    sandstone: new Image(),
 }
 tiles.stone.src = 'Images/Tiles/Stone.png';
 tiles.grass.src = 'Images/Tiles/Grass.png';
@@ -78,6 +84,12 @@ tiles.redstone_block.src = 'Images/Tiles/Redstone_Block.png';
 tiles.diamond_block.src = 'Images/Tiles/Diamond_Block.png';
 tiles.emerald_block.src = 'Images/Tiles/Emerald_Block.png';
 tiles.gravel.src = 'Images/Tiles/Gravel.png';
+tiles.spruce_leaves.src = 'Images/Tiles/Spruce_Leaves.png';
+tiles.spruce_planks.src = 'Images/Tiles/Spruce_Planks.png';
+tiles.spruce_wood.src = 'Images/Tiles/Spruce_Wood.png';
+tiles.ladder.src = 'Images/Tiles/Ladder.png';
+tiles.sand.src = 'Images/Tiles/Sand.png';
+tiles.sandstone.src = 'Images/Tiles/Sandstone.png';
 
 var tileW = 800/16, tileH = 800/16, mapW = gamemap[0].length, mapH = gamemap.length;
 
@@ -127,21 +139,27 @@ function drawGame() {
                     case 3: image = tiles.dirt; break;
                     case 4: image = tiles.cobblestone; break;
                     case 5: image = tiles.oak_planks; break;
+                    case 5.1: image = tile.spruce_planks; break;
                     case 7: image = tiles.bedrock; break;
+                    case 12: image = tiles.sand; break;
                     case 13: image = tiles.gravel; break;
                     case 14: image = tiles.gold_ore; break;
                     case 15: image = tiles.iron_ore; break;
                     case 16: image = tiles.coal_ore; break;
                     case 17: image = tiles.oak_wood; break;
+                    case 17.1: image = tiles.spruce_wood; break;
                     case 18: image = tiles.oak_leaves; break;
+                    case 18.1: image = tiles.spruce_leaves; break;
                     case 21: image = tiles.lapis_ore; break;
                     case 22: image = tiles.lapis_block; break;
+                    case 24: image = tiles.sandstone; break;
                     case 41: image = tiles.gold_block; break;
                     case 42: image = tiles.iron_block; break;
                     case 56: image = tiles.diamond_ore; break;
                     case 57: image = tiles.diamond_block; break;
                     case 58: image = tiles.crafting_table; break;
                     case 61: image = tiles.furnace; break;
+                    case 65: image = tiles.ladder; break;
                     case 73: image = tiles.redstone_ore; break;
                     case 129: image = tiles.emerald_ore; break;
                     case 133: image = tiles.emerald_block; break;
