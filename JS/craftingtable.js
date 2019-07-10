@@ -1,5 +1,6 @@
-var craftingTable = [0,0,0,0,0,0,0,0,0];
+var craftingTable = [null,null,null,null,null,null,null,null,null];
 var tableHidden = true;
+var tableCraftableBlock = null;
 
 function drawCraftingTable() {
     if (tableHidden) { 
@@ -14,7 +15,11 @@ function drawCraftingTable() {
         correct = 0;
         if (resources[i].recipe.table != null) {
             for(j = 0; j < craftingTable.length; j++) {
-                if (craftingTable[j] == resources[i].recipe.table[j]) {
+                if (craftingTable[j] == null && resources[i].recipe.table[j] == 0) {
+                    correct += 1;
+                } else if (craftingTable[j] == null && resources[i].recipe.table[j] != 0) {
+                    correct = 0;
+                } else if (craftingTable[j].block.id == resources[i].recipe.table[j]) {
                     correct += 1;
                 } else {
                     correct = 0;
@@ -57,10 +62,15 @@ function drawCraftingTable() {
     }
 
     for(i = 0; i < craftingTable.length; i++) {
-        if(craftingTable[i] != 0) {
-            document.getElementById('tablecraft'+i).style.backgroundImage = 'url('+toBlock(craftingTable[i]).img+')';
+        if (craftingTable[i] == null || craftingTable[i].amount <= 0) {
+            craftingTable[i] = null;
+        }
+        if(craftingTable[i] != null) {
+            document.getElementById('tablecraft'+i).style.backgroundImage = 'url('+craftingTable[i].block.img+')';
+            document.getElementById('tablecraft'+i).innerHTML = '<p class="blockCount">'+craftingTable[i].amount+'</p>';
         } else {
             document.getElementById('tablecraft'+i).style.backgroundImage = 'none';
+            document.getElementById('tablecraft'+i).innerHTML = '';
         }
     }
 }

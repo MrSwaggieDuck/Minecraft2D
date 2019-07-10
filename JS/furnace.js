@@ -5,18 +5,18 @@ var furnaces = [];
 function drawFurnace() {
     document.getElementById('furnace').hidden = furnaceHidden;
     if (currentFurnace != null) {
-        if (currentFurnace.item.type != null) {
-            document.getElementById('furnace-item').style.backgroundImage = 'url('+currentFurnace.item.type.img+')';
+        if (currentFurnace.item != null) {
+            document.getElementById('furnace-item').style.backgroundImage = 'url('+currentFurnace.item.block.img+')';
         } else {
             document.getElementById('furnace-item').style.backgroundImage = 'none';
         }
-        if (currentFurnace.fuel.type != null) {
-            document.getElementById('furnace-fuel').style.backgroundImage = 'url('+currentFurnace.fuel.type.img+')';
+        if (currentFurnace.fuel != null) {
+            document.getElementById('furnace-fuel').style.backgroundImage = 'url('+currentFurnace.fuel.block.img+')';
         } else {
             document.getElementById('furnace-fuel').style.backgroundImage = 'none';
         }
-        if (currentFurnace.result.type != null) {
-            document.getElementById('furnace-result').style.backgroundImage = 'url('+currentFurnace.result.type.img+')';
+        if (currentFurnace.result != null) {
+            document.getElementById('furnace-result').style.backgroundImage = 'url('+currentFurnace.result.block.img+')';
         } else {
             document.getElementById('furnace-result').style.backgroundImage = 'none';
         }
@@ -27,17 +27,17 @@ function drawFurnace() {
     }
 
     if (!furnaceHidden) {
-        if (currentFurnace.fuel.type != null) {
+        if (currentFurnace.fuel != null) {
             document.getElementById('furnace-fuel').innerHTML = '<div class="blockCount">'+currentFurnace.fuel.amount+'</div>';
         } else {
             document.getElementById('furnace-fuel').innerHTML = '';
         }
-        if (currentFurnace.item.type != null) {
+        if (currentFurnace.item != null) {
             document.getElementById('furnace-item').innerHTML = '<div class="blockCount">'+currentFurnace.item.amount+'</div>';
         } else {
             document.getElementById('furnace-item').innerHTML = '';
         }
-        if (currentFurnace.result.type != null) {
+        if (currentFurnace.result != null) {
             document.getElementById('furnace-result').innerHTML = '<div class="blockCount">'+currentFurnace.result.amount+'</div>';
         } else {
             document.getElementById('furnace-result').innerHTML = '';
@@ -50,40 +50,41 @@ function drawFurnace() {
     
 }
 
-function Furnace(posx, posy) {
+function oFurnace(posx, posy) {
     this.pos = {
         x: posx,
         y: posy, 
     }
-    this.fuel = {type: null, amount: 0, hp: 0};
-    this.item = {type: null, amount: 0};
-    this.result = {type: null, amount: 0};
+    this.fuel;
+    this.hp;
+    this.item;
+    this.result;
     this.progress = 0;
 
     this.collectResult = function() {
-        this.result.type.amount += this.result.amount;
-        PlaceInventory(this.result.type);
-        this.result.type = null;
-        this.result.amount = 0;
+        PlaceInventory(this.result.block, this.result.amount);
+        this.result = null;
     }
     this.tick = function() {
-        if (this.fuel.type == null || this.item.type == null) { this.progress = 0; return };
-        if ((this.fuel.type.id == 263 || Math.floor(this.fuel.type.id) == 17) && this.item.type.meltable[0] == true) {
+        if (this.fuel == null || this.item == null) { this.progress = 0; return };
+        if ((this.fuel.block == Coal || Math.floor(this.fuel.block.id) == 17) && this.item.block.meltable[0] == true) {
             this.progress += 1;
             this.fuel.hp -= 1;
         } else {
             this.progress = 0;
         }
         if (this.progress > 600) {
-            this.result.type = toBlock(this.item.type.meltable[1]);
+            if (this.result == null) {
+                this.result = new Stack(toBlock(this.item.block.meltable[1]));
+            }
             this.result.amount += 1;
             this.item.amount -= 1;
             this.progress = 0;
         }
         if (this.fuel.hp <= 0) {
             this.fuel.amount -= 1;
-            if (currentFurnace.fuel.type == Coal) { this.fuel.hp = 8*600 }
-            else if (Math.floor(currentFurnace.fuel.type.id) == 17) { this.fuel.hp = 1.5*600 }
+            if (currentFurnace.fuel.block == Coal) { this.fuel.hp = 8*600 }
+            else if (Math.floor(currentFurnace.fuel.block.id) == 17) { this.fuel.hp = 1.5*600 }
         }
         
     }
@@ -92,43 +93,41 @@ function Furnace(posx, posy) {
 function setFurnaceSlot(num) {
     if (num == 0) {
         if (inventory[selectedSlot] == null) {
-            if (currentFurnace.item.type != null) {
-                currentFurnace.item.type.amount += currentFurnace.item.amount;
-                PlaceInventory(currentFurnace.item.type);
+            if (currentFurnace.item != null) {
+                PlaceInventory(currentFurnace.item.block, currentFurnace.item.amount);
             }
-            currentFurnace.item.type = null;
-            currentFurnace.item.amount = 0;
+            currentFurnace.item = null;
         } else {
-            if (currentFurnace.item.type != null) {
-                currentFurnace.item.type.amount += currentFurnace.item.amount;
-                PlaceInventory(currentFurnace.item.type);
+            if (currentFurnace.item != null) {
+                itemI = inventory[selectedSlot];
+                itemF = currentFurnace.item;
+                currentFurnace.item = itemI;
+                inventory[selectedSlot] = itemF;
+            } else {
+                itemI = inventory[selectedSlot];
+                itemF = currentFurnace.item;
+                currentFurnace.item = itemI;
+                inventory[selectedSlot] = itemF;
             }
-            currentFurnace.item.type = inventory[selectedSlot];
-            currentFurnace.item.amount = inventory[selectedSlot].amount;
-            inventory[selectedSlot].amount = 0;
         }
         
     } else if (num == 1) {
         if (inventory[selectedSlot] == null) {
-            if (currentFurnace.fuel.type != null) {
-                currentFurnace.fuel.type.amount += currentFurnace.fuel.amount;
+            if (currentFurnace.fuel != null) {
                 if (currentFurnace.progress > 0) {
-                    currentFurnace.fuel.type.amount -= 1;
+                    currentFurnace.fuel.amount -= 1;
                 }
-                PlaceInventory(currentFurnace.fuel.type);
+                PlaceInventory(currentFurnace.fuel.block, currentFurnace.fuel.amount);
             }
-            currentFurnace.fuel.type = null;
-            currentFurnace.fuel.amount = 0;
+            currentFurnace.fuel = null;
         } else {
-            if (currentFurnace.fuel.type != null) {
-                currentFurnace.fuel.type.amount += currentFurnace.fuel.amount;
-                PlaceInventory(currentFurnace.fuel.type);
+            if (currentFurnace.fuel != null) {
+                PlaceInventory(currentFurnace.fuel.block, currentFurnace.fuel.amount);
             }
-            currentFurnace.fuel.type = inventory[selectedSlot];
-            currentFurnace.fuel.amount = inventory[selectedSlot].amount;
-            inventory[selectedSlot].amount = 0;
-            if (currentFurnace.fuel.type == Coal) { currentFurnace.fuel.hp = 8*600 }
-            else if (Math.floor(currentFurnace.fuel.type.id) == 17) { currentFurnace.fuel.hp = 1.5*600 }
+            currentFurnace.fuel = inventory[selectedSlot];
+            inventory[selectedSlot] = null;
+            if (currentFurnace.fuel.block == Coal) { currentFurnace.hp = 8*600 }
+            else if (Math.floor(currentFurnace.fuel.block.id) == 17) { currentFurnace.hp = 1.5*600 }
         }
     }
 }
@@ -143,7 +142,7 @@ function openFurnace(x, y) {
 }
 
 function getFurnaceResult() {
-    if (currentFurnace.result.type == null) {
+    if (currentFurnace.result == null) {
         return;
     }
     currentFurnace.collectResult();

@@ -148,6 +148,6 @@ function Character(posx, posy, sizew, sizeh) {
     }
 }
 
-var player = new Character(100, 100, Math.ceil(tileW*0.75), Math.ceil(tileH*1.8));
+var player = new Character(tileW*mapW/2, 100, Math.ceil(tileW*0.75), Math.ceil(tileH*1.8));
 
 loaded[3] = true;
