@@ -108,6 +108,14 @@
                 top: 70px;
                 background-color: #666;
             }
+            #chest{
+                width: 698px;
+                left: 53px;
+                top: 110px;
+                height: 300px;
+                background-color: #aaa;
+                border-radius: 5px;
+            }
         </style>
     </head>
     <body>
@@ -181,6 +189,37 @@
 
             <div onclick='getFurnaceResult()' id='furnace-result' class='crafting-slot' style='left: 225px; top: 75px'></div>
         </div>
+        <div id='chest' hidden='true'>
+            <div onclick='setChestSlot(0)' id='chest0' class='inventory-item' style='left: 7px; top: 5px;'></div>
+            <div onclick='setChestSlot(1)' id='chest1' class='inventory-item' style='left: 84px; top: 5px;'></div>
+            <div onclick='setChestSlot(2)' id='chest2' class='inventory-item' style='left: 161px; top: 5px;'></div>
+            <div onclick='setChestSlot(3)' id='chest3' class='inventory-item' style='left: 238px; top: 5px;'></div>
+            <div onclick='setChestSlot(4)' id='chest4' class='inventory-item' style='left: 315px; top: 5px;'></div>
+            <div onclick='setChestSlot(5)' id='chest5' class='inventory-item' style='left: 392px; top: 5px;'></div>
+            <div onclick='setChestSlot(6)' id='chest6' class='inventory-item' style='left: 469px; top: 5px;'></div>
+            <div onclick='setChestSlot(7)' id='chest7' class='inventory-item' style='left: 546px; top: 5px;'></div>
+            <div onclick='setChestSlot(8)' id='chest8' class='inventory-item' style='left: 623px; top: 5px;'></div>
+
+            <div onclick='setChestSlot(9)' id='chest9' class='inventory-item' style='left: 7px; top: 80px;'></div>
+            <div onclick='setChestSlot(10)' id='chest10' class='inventory-item' style='left: 84px; top: 80px;'></div>
+            <div onclick='setChestSlot(11)' id='chest11' class='inventory-item' style='left: 161px; top: 80px;'></div>
+            <div onclick='setChestSlot(12)' id='chest12' class='inventory-item' style='left: 238px; top: 80px;'></div>
+            <div onclick='setChestSlot(13)' id='chest13' class='inventory-item' style='left: 315px; top: 80px;'></div>
+            <div onclick='setChestSlot(14)' id='chest14' class='inventory-item' style='left: 392px; top: 80px;'></div>
+            <div onclick='setChestSlot(15)' id='chest15' class='inventory-item' style='left: 469px; top: 80px;'></div>
+            <div onclick='setChestSlot(16)' id='chest16' class='inventory-item' style='left: 546px; top: 80px;'></div>
+            <div onclick='setChestSlot(17)' id='chest17' class='inventory-item' style='left: 623px; top: 80px;'></div>
+
+            <div onclick='setChestSlot(18)' id='chest18' class='inventory-item' style='left: 7px; top: 155px;'></div>
+            <div onclick='setChestSlot(19)' id='chest19' class='inventory-item' style='left: 84px; top: 155px;'></div>
+            <div onclick='setChestSlot(20)' id='chest20' class='inventory-item' style='left: 161px; top: 155px;'></div>
+            <div onclick='setChestSlot(21)' id='chest21' class='inventory-item' style='left: 238px; top: 155px;'></div>
+            <div onclick='setChestSlot(22)' id='chest22' class='inventory-item' style='left: 315px; top: 155px;'></div>
+            <div onclick='setChestSlot(23)' id='chest23' class='inventory-item' style='left: 392px; top: 155px;'></div>
+            <div onclick='setChestSlot(24)' id='chest24' class='inventory-item' style='left: 469px; top: 155px;'></div>
+            <div onclick='setChestSlot(25)' id='chest25' class='inventory-item' style='left: 546px; top: 155px;'></div>
+            <div onclick='setChestSlot(26)' id='chest26' class='inventory-item' style='left: 623px; top: 155px;'></div>
+        </div>
     </body>
     <script src='JS/block.js'></script>
     <script src='JS/terraingen.js'></script>
@@ -190,8 +229,9 @@
     <script src='JS/inventory.js'></script>
     <script src='JS/craftingtable.js'></script>
     <script src='JS/qol.js'></script>
-    <script src='JS/fps.js'></script>
     <script src='JS/furnace.js'></script>
     <script src='JS/stack.js'></script>
+    <script src='JS/chest.js'></script>
     <script src='JS/cheat.js'></script>
+    <script src='JS/fps.js'></script>
 </html>
