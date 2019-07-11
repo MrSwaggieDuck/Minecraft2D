@@ -5,6 +5,7 @@ var correct;
 
 window.addEventListener('keydown', (e) => {
     if(e.keyCode == 69) {
+        mining = false;
         if (!tableHidden) {
             tableHidden = true;
             invHidden = true;
@@ -20,6 +21,12 @@ window.addEventListener('keydown', (e) => {
             furnaceHidden = true;
             invHidden = true;
             currentFurnace = null;
+            return;
+        }
+        if (!chestHidden) {
+            chestHidden = true;
+            invHidden = true;
+            currentChest = null;
             return;
         }
 
@@ -55,11 +62,15 @@ window.addEventListener('keydown', function(e) {
     }
 })
 
-
-var inventory = [];
-for(i = 0; i < 36; i++) {
+if (localStorage.getItem('inventory') == null) {
+    var inventory = [];
+    for(i = 0; i < 36; i++) {
     inventory[i] = null;
+    }
+} else {
+    var inventory = JSON.parse(localStorage.getItem('inventory'));
 }
+
 
 var selectedSlot = 0;
 

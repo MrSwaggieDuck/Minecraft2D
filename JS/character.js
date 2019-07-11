@@ -149,5 +149,10 @@ function Character(posx, posy, sizew, sizeh) {
 }
 
 var player = new Character(tileW*mapW/2, 100, Math.ceil(tileW*0.75), Math.ceil(tileH*1.8));
+if (localStorage.getItem('player') != null) {
+    player.pos.x = JSON.parse(localStorage.getItem('player')).x;
+    player.pos.y = JSON.parse(localStorage.getItem('player')).y;
+}
+
 
 loaded[3] = true;

@@ -2,6 +2,11 @@ var ctx = document.getElementById('game').getContext('2d');
 var canvas = document.getElementById('game');
 ctx.imageSmoothingEnabled = false;
 var i = 0;
+var torches = [];
+var time = -1;
+if (localStorage.getItem('time') != null) {
+    time = Number(localStorage.getItem('time'));
+}
 var keys = {
     37: false,
     38: false,
@@ -58,6 +63,8 @@ var tiles = {
     ladder: new Image(),
     sand: new Image(),
     sandstone: new Image(),
+    chest: new Image(),
+    torch: new Image(),
 }
 tiles.stone.src = 'Images/Tiles/Stone.png';
 tiles.grass.src = 'Images/Tiles/Grass.png';
@@ -90,6 +97,8 @@ tiles.spruce_wood.src = 'Images/Tiles/Spruce_Wood.png';
 tiles.ladder.src = 'Images/Tiles/Ladder.png';
 tiles.sand.src = 'Images/Tiles/Sand.png';
 tiles.sandstone.src = 'Images/Tiles/Sandstone.png';
+tiles.chest.src = 'Images/Tiles/Chest.png';
+tiles.torch.src = 'Images/Tiles/Torch.png';
 
 var tileW = 800/16, tileH = 800/16, mapW = gamemap[0].length, mapH = gamemap.length;
 
@@ -126,9 +135,12 @@ function drawGame() {
     if(loaded[3] == false) { return};
 
     player.move();
+    time += 0.0001;
     viewport.update(player.pos.x + (player.size.w/2), player.pos.y + (player.size.h/2));
     ctx.fillStyle = "#000";
     ctx.fillRect(0, 0, mapW*tileW, mapH*tileH);
+
+    torches = [];
 
     for(x = viewport.startTile.x; x <= viewport.endTile.x; x++) {
         for(y = viewport.startTile.y; y <= viewport.endTile.y; y++) {
@@ -155,6 +167,8 @@ function drawGame() {
                     case 24: image = tiles.sandstone; break;
                     case 41: image = tiles.gold_block; break;
                     case 42: image = tiles.iron_block; break;
+                    case 50: image = tiles.torch; torches.push({x: x, y: y}); break;
+                    case 54: image = tiles.chest; break;
                     case 56: image = tiles.diamond_ore; break;
                     case 57: image = tiles.diamond_block; break;
                     case 58: image = tiles.crafting_table; break;
@@ -171,14 +185,34 @@ function drawGame() {
                 ctx.fillStyle = '#80ebff';
                 ctx.fillRect(viewport.offset.x + x*tileW, viewport.offset.y + y*tileH, tileW, tileH);
             }
+            
         }
     }
 
-    
-
     ctx.fillStyle = '#ff0000';
     player.draw();
-    localStorage.setItem('gamemap', JSON.stringify(gamemap));
+
+    timeColor = Math.sin(time);
+    if (Math.sin(time) > 0) {
+        ctx.fillStyle = 'rgba(0,0,0,'+Math.min(timeColor, 0.95)+')';
+        ctx.fillRect(0,0, screen.width, screen.height);
+    }
+
+    for (i = 0; i < torches.length; i++) {
+        ctx.fillStyle = 'rgba(255,255,255,0.2)';
+        ctx.beginPath();
+        ctx.arc(torches[i].x*tileW+viewport.offset.x + tileW/2, torches[i].y*tileH+viewport.offset.y + tileH/2, tileW*3, 0, 2*Math.PI);
+        ctx.closePath();
+        ctx.fill();
+    }
+    if (inventory[selectedSlot] != null && inventory[selectedSlot].block.id == Torch.id) {
+        ctx.fillStyle = 'rgba(255,255,255,0.2)';
+        ctx.beginPath();
+        ctx.arc(player.pos.x+viewport.offset.x, player.pos.y+viewport.offset.y, tileW*5, 0, 2*Math.PI);
+        ctx.closePath();
+        ctx.fill();
+    }
+    
 }
 
 function setMap(block, x, y) {

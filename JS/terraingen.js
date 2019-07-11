@@ -2,6 +2,7 @@ var gamemapReady = false;
 var heights = [];
 var biomes = [];
 var collisionmap = [];
+var gamemap = [];
 
 function GenerateTerrain(w, h) {
     var terrain = [];
@@ -296,5 +297,12 @@ function GenerateTerrain(w, h) {
     return terrain;
 }
 
+if (localStorage.getItem('gamemap') == null) {
+    gamemap = GenerateTerrain(1024,128);
+} else {
+    gamemap = JSON.parse(localStorage.getItem('gamemap'));
+    collisionmap = JSON.parse(localStorage.getItem('collisionmap'));
+}
 
-gamemap = GenerateTerrain(1024,128);
+gamemapReady = true;
+

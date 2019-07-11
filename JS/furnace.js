@@ -2,6 +2,20 @@ var furnaceHidden = true;
 var currentFurnace = null;
 var furnaces = [];
 
+if (localStorage.getItem('furnaces') == null) {
+    var furnaces = [];
+} else {
+    var furnaceData = JSON.parse(localStorage.getItem('furnaces'));
+    for (i = 0; i < furnaceData.length; i++) {
+        furnaces[i] = new oFurnace();
+        furnaces[i].fuel = furnaceData[i].fuel;
+        furnaces[i].hp = furnaceData[i].hp;
+        furnaces[i].item = furnaceData[i].item;
+        furnaces[i].result = furnaceData[i].result;
+        furnaces[i].pos = furnaceData[i].pos;
+    }
+}
+
 function drawFurnace() {
     document.getElementById('furnace').hidden = furnaceHidden;
     if (currentFurnace != null) {
@@ -67,7 +81,7 @@ function oFurnace(posx, posy) {
     }
     this.tick = function() {
         if (this.fuel == null || this.item == null) { this.progress = 0; return };
-        if ((this.fuel.block == Coal || Math.floor(this.fuel.block.id) == 17) && this.item.block.meltable[0] == true) {
+        if ((this.fuel.block.id == 263 || Math.floor(this.fuel.block.id) == 17) && this.item.block.meltable[0] == true) {
             this.progress += 1;
             this.fuel.hp -= 1;
         } else {
@@ -80,11 +94,17 @@ function oFurnace(posx, posy) {
             this.result.amount += 1;
             this.item.amount -= 1;
             this.progress = 0;
+            if (this.item.amount <= 0) {
+                this.item = null;
+            }
         }
         if (this.fuel.hp <= 0) {
             this.fuel.amount -= 1;
-            if (currentFurnace.fuel.block == Coal) { this.fuel.hp = 8*600 }
-            else if (Math.floor(currentFurnace.fuel.block.id) == 17) { this.fuel.hp = 1.5*600 }
+            if (this.fuel.amount <= 0) {
+                this.fuel = null
+            }
+            if (this.fuel != null && this.fuel.block == Coal) { this.fuel.hp = 8*600 }
+            else if (this.fuel!= null && Math.floor(this.fuel.block.id) == 17) { this.fuel.hp = 1.5*600 }
         }
         
     }
@@ -146,4 +166,12 @@ function getFurnaceResult() {
         return;
     }
     currentFurnace.collectResult();
+}
+
+function removeFurnace(x, y) {
+    for (i = 0; i < furnaces.length; i++) {
+        if (furnaces[i].pos.x == x && furnaces[i].pos.y == y) {
+            furnaces.splice(i, 1);
+        }
+    }
 }
