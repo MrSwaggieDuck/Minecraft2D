@@ -35,6 +35,7 @@ var Coal_Block = new Block(173, 'Images/Items/Coal_Block.png', 'block', 25, 64, 
 var Iron_Shovel = new Block(256, 'Images/Items/Iron_Shovel.png', 'tool', null, 1, null, [0,265,0, 0,280,0, 0,280,0, 1], [false, null]);
 var Iron_Pickaxe = new Block(257, 'Images/Items/Iron_Pickaxe.png', 'tool', null, 1, null, [265,265,265, 0,280,0, 0,280,0, 1], [false, null]);
 var Iron_Axe = new Block(258, 'Images/Items/Iron_Axe.png', 'tool', null, 1, null, [265,265,0, 265,280,0, 0,280,0, 1], [false, null]);
+var Apple = new Block(260, 'Images/Items/Apple.png', 'tool', null, 64, null, null, [false, null]);
 var Coal = new Block(263, 'Images/Items/Coal.png', 'tool', null, 64, [0,0, 0,173, 9], [0,0,0, 0173,0, 0,0,0, 9], [false, null]);
 var Diamond = new Block(264, 'Images/Items/Diamond.png', 'tool', null, 64, [0,0, 0,57, 9], [0,0,0, 0,57,0, 0,0,0, 9], [false, null])
 var Iron = new Block(265, 'Images/Items/Iron.png', 'tool', null, 64, [0,0, 0,42, 9], [0,0,0, 0,42,0, 0,0,0, 9], [false, null]);
@@ -56,7 +57,7 @@ var Redstone = new Block(331, 'Images/Items/Redstone.png', 'tool', null, 64, [0,
 var Lapis = new Block(351.4, 'Images/Items/Lapis.png', 'tool', null, 64, [0,0, 0,22, 9], [0,0,0, 0,22,0, 0,0,0, 9], [false, null]);
 var Emerald = new Block(388, 'Images/Items/Emerald.png', 'tool', null, 64, [0,0, 0,129, 9], [0,0,0, 0,129,0, 0,0,0, 9], [false, null]);
 
-var resources = [Stone, Grass, Dirt, Cobblestone, Oak_Planks, Spruce_Planks, Sand, Gravel, Gold_Ore, Iron_Ore, Coal_Ore, Oak_Wood, Spruce_Wood, Oak_Leaves, Spruce_Leaves, Lapis_Ore, Sandstone, Lapis_Block, Gold_Block, Iron_Block, Torch, Chest, Diamond_Ore, Diamond_Block, Crafting_Table, Furnace, Ladder, Redstone_Ore, Emerald_Ore, Emerald_Block, Redstone_Block, Coal_Block, Iron_Shovel, Iron_Pickaxe, Iron_Axe, Coal, Diamond, Iron, Gold, Wooden_Shovel, Wooden_Pickaxe, Wooden_Axe, Stone_Shovel, Stone_Pickaxe, Stone_Axe, Diamond_Shovel, Diamond_Pickaxe, Diamond_Axe, Stick, Golden_Shovel, Golden_Pickaxe, Golden_Axe, Redstone, Lapis, Emerald];
+var resources = [Stone, Grass, Dirt, Cobblestone, Oak_Planks, Spruce_Planks, Sand, Gravel, Gold_Ore, Iron_Ore, Coal_Ore, Oak_Wood, Spruce_Wood, Oak_Leaves, Spruce_Leaves, Lapis_Ore, Sandstone, Lapis_Block, Gold_Block, Iron_Block, Torch, Chest, Diamond_Ore, Diamond_Block, Crafting_Table, Furnace, Ladder, Redstone_Ore, Emerald_Ore, Emerald_Block, Redstone_Block, Coal_Block, Iron_Shovel, Iron_Pickaxe, Iron_Axe, Apple, Coal, Diamond, Iron, Gold, Wooden_Shovel, Wooden_Pickaxe, Wooden_Axe, Stone_Shovel, Stone_Pickaxe, Stone_Axe, Diamond_Shovel, Diamond_Pickaxe, Diamond_Axe, Stick, Golden_Shovel, Golden_Pickaxe, Golden_Axe, Redstone, Lapis, Emerald];
 
 function Block(id, img, type, hp, stacksize, invrecipe, tablerecipe, meltable) {
     this.id = id;

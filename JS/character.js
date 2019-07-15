@@ -4,6 +4,8 @@ function Character(posx, posy, sizew, sizeh) {
     this.force = {x: 0, y: 0};
     this.speed = 5;
     this.shifting = false;
+    this.health = 100;
+    this.food = 100;
 
     if(this.size.w % 2 != 0) {
         this.size.w += 1;
@@ -47,6 +49,7 @@ function Character(posx, posy, sizew, sizeh) {
             if (this.colliding(this.BR.x, this.BR.y+1) || this.colliding(this.BL.x, this.BL.y+1)) {
                 this.force.y = -12;
             }
+            this.jumpstart = this.pos.y;
         } 
         if (onLadder && (keys[38] || keys[87])) {
             this.force.y = -5;
@@ -74,6 +77,11 @@ function Character(posx, posy, sizew, sizeh) {
                     this.pos.y += 1;
                     this.BR.y += 1;
                     this.BL.y += 1;
+                }
+
+                console.log(Math.abs(this.jumpstart - this.pos.y)/tileH);
+                if (Math.abs(this.jumpstart - this.pos.y) /tileH > 3) {
+                    this.health -= Math.abs(this.jumpstart - this.pos.y) / tileH * 5;
                 }
             }
         } else if (this.force.y < 0) {
@@ -145,6 +153,43 @@ function Character(posx, posy, sizew, sizeh) {
         ctx.fillRect(this.BR.x + viewport.offset.x, this.BR.y + viewport.offset.y, 1, 1);
         ctx.fillRect(this.ML.x + viewport.offset.x, this.ML.y + viewport.offset.y, 1, 1);
         ctx.fillRect(this.MR.x + viewport.offset.x, this.MR.y + viewport.offset.y, 1, 1);
+    }
+
+    this.tick = function() {
+        if (this.food <= 0) {
+            this.food = 0;
+            if (this.health >= 10) {
+                this.health -= 0.01;
+            }
+        } else {
+            this.food -= 0.001;
+        }
+
+        if (this.food > 90 && this.health < 100) {
+            this.health += 0.1;
+        }
+
+        if (this.health <= 0) {
+            this.die();
+        } else if (this.health >= 100) {
+            this.health = 100;
+        }
+
+        document.getElementById('health-counter').textContent = Math.ceil(this.health) + '/100';        
+        document.getElementById('food-counter').textContent = Math.ceil(this.food) + '/100';
+
+        document.getElementById('current-health').style.width = this.health/100*100+'%';
+        document.getElementById('current-food').style.width = this.food/100*100+'%';
+    }
+
+    this.die = function() {
+        player.pos.x = mapW*tileW/2;
+        player.pos.y = 100;
+        this.health = 100;
+        this.food = 100;
+        for (i = 0; i < 36; i++) {
+            inventory[i] = null;
+        }   
     }
 }
 

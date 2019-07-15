@@ -50,8 +50,11 @@ function Mine() {
         if (tool == Iron_Pickaxe.id || tool == Diamond_Pickaxe.id) { 
             PlaceInventory(Emerald, 1);
         }
-    } else if (toBlock(minedBlock) == Oak_Leaves) {
-
+    } else if (toBlock(minedBlock) == Oak_Leaves || toBlock(minedBlock) == Spruce_Leaves) {
+        console.log('leaves');
+        if (Math.random() > 0.5) {
+            PlaceInventory(Apple, 1);
+        }
     } else if (toBlock(minedBlock) == Coal_Block) {
         if (tool == Wooden_Pickaxe.id || tool == Stone_Pickaxe.id || tool == Iron_Pickaxe.id || tool == Diamond_Pickaxe.id || tool == Golden_Pickaxe.id) { 
             PlaceInventory(Coal_Block, 1);
@@ -128,6 +131,14 @@ function startMining(e) {
         chestHidden = false;
         invHidden = false;
         openChest(tileX, tileY);
+    } 
+
+    if (inventory[selectedSlot] != null && inventory[selectedSlot].block.id == Apple.id && keys[16]) {
+        player.food += 20;
+        if (player.food > 100) {
+            player.food = 100;
+        }
+        inventory[selectedSlot].amount -= 1;
     }
 
     if (keys[16] == true && gamemap[tileY][tileX] == 0) {

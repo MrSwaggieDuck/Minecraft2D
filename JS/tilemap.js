@@ -151,7 +151,7 @@ function drawGame() {
                     case 3: image = tiles.dirt; break;
                     case 4: image = tiles.cobblestone; break;
                     case 5: image = tiles.oak_planks; break;
-                    case 5.1: image = tile.spruce_planks; break;
+                    case 5.1: image = tiles.spruce_planks; break;
                     case 7: image = tiles.bedrock; break;
                     case 12: image = tiles.sand; break;
                     case 13: image = tiles.gravel; break;
@@ -191,6 +191,7 @@ function drawGame() {
 
     ctx.fillStyle = '#ff0000';
     player.draw();
+    player.tick();
 
     timeColor = Math.sin(time);
     if (Math.sin(time) > 0) {
