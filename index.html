@@ -8,6 +8,7 @@
                 position: absolute;
                 background-repeat: no-repeat;
                 background-position: 50% 50%;
+                font-family: Arial, Helvetica, sans-serif;
             }
             #inventory{
                 width: 700px;
@@ -116,6 +117,48 @@
                 background-color: #aaa;
                 border-radius: 5px;
             }
+            #health{
+                width: 300px;
+                height: 40px;
+                left: 75px;
+                top: 675px;
+                border: black solid 2px;
+                border-radius: 15px;
+                background-color: white;
+                overflow: hidden;
+            }
+            #food{
+                width: 300px;
+                height: 40px;
+                left: 425px;
+                top: 675px;
+                border: black solid 2px;
+                border-radius: 15px;
+                background-color: white;
+                overflow: hidden;
+            }
+            #current-health{
+                height: 40px;
+                background-color: red;
+            }
+            #current-food{
+                height: 40px;
+                background-color: blue;
+            }
+            #health-counter{
+                height: 40px;
+                width: 100px;
+                left: 100px;
+                font-size: 30px;
+                text-align: center;
+            }
+            #food-counter{
+                height: 40px;
+                width: 100px;
+                left: 100px;
+                font-size: 30px;
+                text-align: center;
+            }
         </style>
     </head>
     <body>
@@ -130,6 +173,14 @@
             <div onclick='selectSlot(6)' id='inv6' class='hotbar-item' style='left: 469px'>7</div>
             <div onclick='selectSlot(7)' id='inv7' class='hotbar-item' style='left: 546px'>8</div>
             <div onclick='selectSlot(8)' id='inv8' class='hotbar-item' style='left: 623px'>9</div>
+        </div>
+        <div id='health'>
+            <div id='current-health'></div>
+            <div id='health-counter'>100/100</div>
+        </div>
+        <div id='food'>
+            <div id='current-food'></div>
+            <div id='food-counter'>100/100</div>
         </div>
         <div id='inventory' hidden='true'>
             <div onclick='selectSlot(9)' id='inv9' class='inventory-item' style='left: 7px; top: 375px;'></div>
